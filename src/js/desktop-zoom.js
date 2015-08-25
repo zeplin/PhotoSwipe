@@ -55,19 +55,19 @@ _registerModule('DesktopZoom', {
 			var hasDraggingClass,
 				updateZoomable = function() {
 					if(self.mouseZoomedIn) {
-						framework.removeClass(template, 'pswp--zoomed-in');
+						template.classList.remove('pswp--zoomed-in');
 						self.mouseZoomedIn = false;
 					}
 					if(_currZoomLevel < 1) {
-						framework.addClass(template, 'pswp--zoom-allowed');
+						template.classList.add('pswp--zoom-allowed');
 					} else {
-						framework.removeClass(template, 'pswp--zoom-allowed');
+						template.classList.remove('pswp--zoom-allowed');
 					}
 					removeDraggingClass();
 				},
 				removeDraggingClass = function() {
 					if(hasDraggingClass) {
-						framework.removeClass(template, 'pswp--dragging');
+						template.classList.remove('pswp--dragging');
 						hasDraggingClass = false;
 					}
 				};
@@ -77,7 +77,7 @@ _registerModule('DesktopZoom', {
 			_listen('pointerDown', function() {
 				if(self.mouseZoomedIn) {
 					hasDraggingClass = true;
-					framework.addClass(template, 'pswp--dragging');
+					template.classList.add('pswp--dragging');
 				}
 			});
 			_listen('pointerUp', removeDraggingClass);
@@ -163,7 +163,7 @@ _registerModule('DesktopZoom', {
 			self.mouseZoomedIn = !zoomOut;
 
 			self.zoomTo(zoomOut ? self.currItem.initialZoomLevel : doubleTapZoomLevel, centerPoint, 333);
-			framework[ (!zoomOut ? 'add' : 'remove') + 'Class'](template, 'pswp--zoomed-in');
+            template.classList.toggle('pswp--zoomed-in', !zoomOut);
 		}
 
 	}

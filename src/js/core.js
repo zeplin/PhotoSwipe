@@ -224,7 +224,7 @@ var _isOpen,
 		// We do this, because some mobile browsers trigger it on touchstart
 		if(_mouseMoveTimeout ) { 
 			framework.unbind(document, 'mousemove', _onFirstMouseMove);
-			framework.addClass(template, 'pswp--has_mouse');
+			template.classList.add('pswp--has_mouse');
 			_options.mouseUsed = true;
 			_shout('mouseUsed');
 		}
@@ -322,7 +322,7 @@ var _isOpen,
 		// (so they use left/top/width/height, instead of CSS transform)
 	
 		_transformKey = 'left';
-		framework.addClass(template, 'pswp--ie');
+		template.classList.add('pswp--ie');
 
 		_setTranslateX = function(x, elStyle) {
 			elStyle.left = x + 'px';
@@ -512,7 +512,7 @@ var publicMethods = {
 
 		self.framework = framework; // basic functionality
 		self.template = template; // root DOM element of PhotoSwipe
-		self.bg = framework.getChildByClass(template, 'pswp__bg');
+		self.bg = template.querySelector('.pswp__bg');
 
 		_initalClassName = template.className;
 		_isOpen = true;
@@ -523,8 +523,8 @@ var publicMethods = {
 		_transformKey = _features.transform;
 		_oldIE = _features.oldIE;
 		
-		self.scrollWrap = framework.getChildByClass(template, 'pswp__scroll-wrap');
-		self.container = framework.getChildByClass(self.scrollWrap, 'pswp__container');
+		self.scrollWrap = template.querySelector('.pswp__scroll-wrap');
+		self.container = self.scrollWrap.querySelector('.pswp__container');
 
 		_containerStyle = self.container.style; // for fast access
 
@@ -595,17 +595,12 @@ var publicMethods = {
 		}
 		
 		// add classes to root element of PhotoSwipe
-		var rootClasses = 'pswp--open ';
-		if(_options.mainClass) {
-			rootClasses += _options.mainClass + ' ';
-		}
-		if(_options.showHideOpacity) {
-			rootClasses += 'pswp--animate_opacity ';
-		}
-		rootClasses += _likelyTouchDevice ? 'pswp--touch' : 'pswp--notouch';
-		rootClasses += _features.animationName ? ' pswp--css_animation' : '';
-		rootClasses += _features.svg ? ' pswp--svg' : '';
-		framework.addClass(template, rootClasses);
+        template.classList.add('pswp--open');
+        template.classList.toggle(_options.mainClass, !!_options.mainClass);
+        template.classList.toggle('pswp--animate_opacity', _options.showHideOpacity);
+        template.classList.add(_likelyTouchDevice ? 'pswp--touch' : 'pswp--notouch');
+        template.classList.toggle('pswp--css_animation', !!_features.animationName);
+        template.classList.toggle('pswp--svg', _features.svg);
 
 		self.updateSize();
 
@@ -618,7 +613,7 @@ var publicMethods = {
 
 		if(!_oldIE) {
 			framework.bind(self.scrollWrap, _downEvents, self); // no dragging for old IE
-		}	
+		}
 
 		_listen('initialZoomInEnd', function() {
 			self.setContent(_itemHolders[0], _currentItemIndex-1);
@@ -662,7 +657,7 @@ var publicMethods = {
 			}, 1000);
 		}
 
-		framework.addClass(template, 'pswp--visible');
+		template.classList.add('pswp--visible');
 	},
 
 	// Close the gallery, then destroy it
@@ -775,7 +770,7 @@ var publicMethods = {
 		// itemHolder[1] is middle (current) item
 		if(_itemHolders[1].el.children.length) {
 			var zoomElement = _itemHolders[1].el.children[0];
-			if( framework.hasClass(zoomElement, 'pswp__zoom-wrap') ) {
+			if( zoomElement.classList.contains('pswp__zoom-wrap') ) {
 				_currZoomElementStyle = zoomElement.style;
 			} else {
 				_currZoomElementStyle = null;

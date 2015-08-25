@@ -61,7 +61,7 @@ _registerModule('Tap', {
 
 				var clickedTagName = e.target.tagName.toUpperCase();
 				// avoid double tap delay on buttons and elements that have class pswp__single-tap
-				if(clickedTagName === 'BUTTON' || framework.hasClass(e.target, 'pswp__single-tap') ) {
+				if(clickedTagName === 'BUTTON' || e.target.classList.contains('pswp__single-tap') ) {
 					_dispatchTapEvent(e, releasePoint);
 					return;
 				}

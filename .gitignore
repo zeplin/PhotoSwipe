@@ -30,8 +30,4 @@ website/dist/
 .node-version
 .sass-cache/
 
-
-
-
-
-
+dist

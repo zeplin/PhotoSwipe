@@ -39,7 +39,7 @@ var _showOrHideTimeout,
 				if(img) {
 					img.style.display = 'block';
 				}
-				framework.addClass(template, 'pswp--animated-in');
+				template.classList.add('pswp--animated-in');
 				_shout('initialZoom' + (out ? 'OutEnd' : 'InEnd'));
 			} else {
 				self.template.removeAttribute('style');
@@ -96,15 +96,15 @@ var _showOrHideTimeout,
 			_registerStartAnimation('initialZoom');
 			
 			if(out && !closeWithRaf) {
-				framework.removeClass(template, 'pswp--animated-in');
+				template.classList.remove('pswp--animated-in');
 			}
 
 			if(fadeEverything) {
 				if(out) {
-					framework[ (closeWithRaf ? 'remove' : 'add') + 'Class' ](template, 'pswp--animate_opacity');
+                    template.classList.toggle('pswp--animate_opacity', !closeWithRaf);
 				} else {
 					setTimeout(function() {
-						framework.addClass(template, 'pswp--animate_opacity');
+						template.classList.add('pswp--animate_opacity');
 					}, 30);
 				}
 			}

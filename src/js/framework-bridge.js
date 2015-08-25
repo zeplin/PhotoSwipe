@@ -16,9 +16,6 @@ var framework = {
 			}
 		}
 	},
-	isArray: function(obj) {
-		return (obj instanceof Array);
-	},
 	createEl: function(classes, tag) {
 		var el = document.createElement(tag || 'div');
 		if(classes) {
@@ -32,27 +29,6 @@ var framework = {
 	},
 	unbind: function(target, type, listener) {
 		framework.bind(target,type,listener,true);
-	},
-	removeClass: function(el, className) {
-		var reg = new RegExp('(\\s|^)' + className + '(\\s|$)');
-		el.className = el.className.replace(reg, ' ').replace(/^\s\s*/, '').replace(/\s\s*$/, ''); 
-	},
-	addClass: function(el, className) {
-		if( !framework.hasClass(el,className) ) {
-			el.className += (el.className ? ' ' : '') + className;
-		}
-	},
-	hasClass: function(el, className) {
-		return el.className && new RegExp('(^|\\s)' + className + '(\\s|$)').test(el.className);
-	},
-	getChildByClass: function(parentEl, childClassName) {
-		var node = parentEl.firstChild;
-		while(node) {
-			if( framework.hasClass(node, childClassName) ) {
-				return node;
-			}
-			node = node.nextSibling;
-		}
 	},
 	arraySearch: function(array, value, key) {
 		var i = array.length;

@@ -148,9 +148,6 @@ var PhotoSwipeUI_Default =
 		_fitControlsInViewport = function() {
 			return !pswp.likelyTouchDevice || _options.mouseUsed || screen.width > 1200;
 		},
-		_togglePswpClass = function(el, cName, add) {
-			framework[ (add ? 'add' : 'remove') + 'Class' ](el, 'pswp__' + cName);
-		},
 
 		// add class when there is just one item in the gallery
 		// (by default it hides left/right arrows and 1ofX counter)
@@ -158,12 +155,12 @@ var PhotoSwipeUI_Default =
 			var hasOneSlide = (_options.getNumItemsFn() === 1);
 
 			if(hasOneSlide !== _galleryHasOneSlide) {
-				_togglePswpClass(_controls, 'ui--one-slide', hasOneSlide);
+				_controls.classList.toggle('pswp__ui--one-slide', hasOneSlide);
 				_galleryHasOneSlide = hasOneSlide;
 			}
 		},
 		_toggleShareModalClass = function() {
-			_togglePswpClass(_shareModal, 'share-modal--hidden', _shareModalHidden);
+			_shareModal.classList.toggle('pswp__share-modal--hidden', _shareModalHidden);
 		},
 		_toggleShareModal = function() {
 
@@ -174,11 +171,11 @@ var PhotoSwipeUI_Default =
 				_toggleShareModalClass();
 				setTimeout(function() {
 					if(!_shareModalHidden) {
-						framework.addClass(_shareModal, 'pswp__share-modal--fade-in');
+						_shareModal.classList.add('pswp__share-modal--fade-in');
 					}
 				}, 30);
 			} else {
-				framework.removeClass(_shareModal, 'pswp__share-modal--fade-in');
+				_shareModal.classList.remove('pswp__share-modal--fade-in');
 				setTimeout(function() {
 					if(_shareModalHidden) {
 						_toggleShareModalClass();
@@ -251,7 +248,7 @@ var PhotoSwipeUI_Default =
 		},
 		_hasCloseClass = function(target) {
 			for(var  i = 0; i < _options.closeElClasses.length; i++) {
-				if( framework.hasClass(target, 'pswp__' + _options.closeElClasses[i]) ) {
+				if( target.classList.contains('pswp__' + _options.closeElClasses[i]) ) {
 					return true;
 				}
 			}
@@ -284,9 +281,9 @@ var PhotoSwipeUI_Default =
 				if(_fullscrenAPI) {
 					framework.bind(document, _fullscrenAPI.eventK, ui.updateFullscreen);
 					ui.updateFullscreen();
-					framework.addClass(pswp.template, 'pswp--supports-fs');
+					pswp.template.classList.add('pswp--supports-fs');
 				} else {
-					framework.removeClass(pswp.template, 'pswp--supports-fs');
+					pswp.template.classList.remove('pswp--supports-fs');
 				}
 			}
 		},
@@ -329,7 +326,7 @@ var PhotoSwipeUI_Default =
 		},
 		_toggleLoadingIndicator = function(hide) {
 			if( _loadingIndicatorHidden !== hide ) {
-				_togglePswpClass(_loadingIndicator, 'preloader--active', !hide);
+				_loadingIndicator.classList.toggle('pswp__preloader--active', !hide);
 				_loadingIndicatorHidden = hide;
 			}
 		},
@@ -344,7 +341,7 @@ var PhotoSwipeUI_Default =
 						_fakeCaptionContainer = framework.createEl('pswp__caption pswp__caption--fake');
 						_fakeCaptionContainer.appendChild( framework.createEl('pswp__caption__center') );
 						_controls.insertBefore(_fakeCaptionContainer, _captionContainer);
-						framework.addClass(_controls, 'pswp__ui--fit');
+						_controls.classList.add('pswp__ui--fit');
 					}
 					if( _options.addCaptionHTMLFn(item, _fakeCaptionContainer, true) ) {
 
@@ -511,14 +508,14 @@ var PhotoSwipeUI_Default =
 
 						if( _options[uiElement.option] ) { // if element is not disabled from options
 							
-							framework.removeClass(item, 'pswp__element--disabled');
+							item.classList.remove('pswp__element--disabled');
 							if(uiElement.onInit) {
 								uiElement.onInit(item);
 							}
 							
 							//item.style.display = 'block';
 						} else {
-							framework.addClass(item, 'pswp__element--disabled');
+							item.classList.add('pswp__element--disabled');
 							//item.style.display = 'none';
 						}
 					}
@@ -527,7 +524,7 @@ var PhotoSwipeUI_Default =
 		};
 		loopThroughChildElements(_controls.children);
 
-		var topBar =  framework.getChildByClass(_controls, 'pswp__top-bar');
+		var topBar =  _controls.querySelector('.pswp__top-bar');
 		if(topBar) {
 			loopThroughChildElements( topBar.children );
 		}
@@ -545,7 +542,7 @@ var PhotoSwipeUI_Default =
 		_options = pswp.options;
 
 		// find pswp__ui element
-		_controls = framework.getChildByClass(pswp.scrollWrap, 'pswp__ui');
+		_controls = pswp.scrollWrap.querySelector('.pswp__ui');
 
 		// create local link
 		_listen = pswp.listen;
@@ -620,28 +617,28 @@ var PhotoSwipeUI_Default =
 				if(_fakeCaptionContainer) {
 					_controls.removeChild(_fakeCaptionContainer);
 				}
-				framework.removeClass(_captionContainer, 'pswp__caption--empty');
+				_captionContainer.classList.remove('pswp__caption--empty');
 			}
 
 			if(_shareModal) {
 				_shareModal.children[0].onclick = null;
 			}
-			framework.removeClass(_controls, 'pswp__ui--over-close');
-			framework.addClass( _controls, 'pswp__ui--hidden');
+			_controls.classList.remove('pswp__ui--over-close');
+			 _controls.classList.add('pswp__ui--hidden');
 			ui.setIdle(false);
 		});
 		
 
 		if(!_options.showAnimationDuration) {
-			framework.removeClass( _controls, 'pswp__ui--hidden');
+			 _controls.classList.remove('pswp__ui--hidden');
 		}
 		_listen('initialZoomIn', function() {
 			if(_options.showAnimationDuration) {
-				framework.removeClass( _controls, 'pswp__ui--hidden');
+				 _controls.classList.remove('pswp__ui--hidden');
 			}
 		});
 		_listen('initialZoomOut', function() {
-			framework.addClass( _controls, 'pswp__ui--hidden');
+			 _controls.classList.add('pswp__ui--hidden');
 		});
 
 		_listen('parseVerticalMargin', _applyNavBarGaps);
@@ -663,7 +660,7 @@ var PhotoSwipeUI_Default =
 
 	ui.setIdle = function(isIdle) {
 		_isIdle = isIdle;
-		_togglePswpClass(_controls, 'ui--idle', isIdle);
+		_controls.classList.toggle('pswp__ui--idle', isIdle);
 	};
 
 	ui.update = function() {
@@ -675,7 +672,7 @@ var PhotoSwipeUI_Default =
 			if(_options.captionEl) {
 				_options.addCaptionHTMLFn(pswp.currItem, _captionContainer);
 
-				_togglePswpClass(_captionContainer, 'caption--empty', !pswp.currItem.title);
+				_captionContainer.classList.toggle('pswp__caption--empty', !pswp.currItem.title);
 			}
 
 			_overlayUIUpdated = true;
@@ -702,7 +699,7 @@ var PhotoSwipeUI_Default =
 		}
 		
 		// toogle pswp--fs class on root element
-		framework[ (_fullscrenAPI.isFullscreen() ? 'add' : 'remove') + 'Class' ](pswp.template, 'pswp--fs');
+        pswp.template.classList.toggle('pswp--fs', _fullscrenAPI.isFullscreen());
 	};
 
 	ui.updateIndexIndicator = function() {
@@ -729,7 +726,7 @@ var PhotoSwipeUI_Default =
 				return;
 			}
 
-			if(framework.hasClass(target, 'pswp__img')) {
+			if(target.classList.contains('pswp__img')) {
 				if(pswp.getZoomLevel() === 1 && pswp.getZoomLevel() <= pswp.currItem.fitRatio) {
 					if(_options.clickToCloseNonZoomable) {
 						pswp.close();
@@ -751,7 +748,7 @@ var PhotoSwipeUI_Default =
 			}
 
 			// tap to close gallery
-			if(_options.tapToClose && (framework.hasClass(target, 'pswp__img') || _hasCloseClass(target)) ) {
+			if(_options.tapToClose && (target.classList.contains('pswp__img') || _hasCloseClass(target)) ) {
 				pswp.close();
 				return;
 			}
@@ -763,11 +760,11 @@ var PhotoSwipeUI_Default =
 		var target = e.target || e.srcElement;
 
 		// add class when mouse is over an element that should close the gallery
-		_togglePswpClass(_controls, 'ui--over-close', _hasCloseClass(target));
+		_controls.classList.toggle('pswp__ui--over-close', _hasCloseClass(target));
 	};
 
 	ui.hideControls = function() {
-		framework.addClass(_controls,'pswp__ui--hidden');
+		_controls.classList.add('pswp__ui--hidden');
 		_controlsVisible = false;
 	};
 
