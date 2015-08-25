@@ -93,7 +93,6 @@ var framework = {
 	 *  raf : request animation frame function
 	 *  caf : cancel animation frame function
 	 *  transfrom : transform property key (with vendor), or null if not supported
-	 *  oldIE : IE8 or below
 	 * }
 	 * 
 	 */
@@ -105,9 +104,6 @@ var framework = {
 			helperStyle = helperEl.style,
 			vendor = '',
 			features = {};
-
-		// IE8 and below
-		features.oldIE = document.all && !document.addEventListener;
 
 		features.touch = 'ontouchstart' in window;
 
@@ -214,40 +210,3 @@ var framework = {
 };
 
 framework.detectFeatures();
-
-// Override addEventListener for old versions of IE
-if(framework.features.oldIE) {
-
-	framework.bind = function(target, type, listener, unbind) {
-		
-		type = type.split(' ');
-
-		var methodName = (unbind ? 'detach' : 'attach') + 'Event',
-			evName,
-			_handleEv = function() {
-				listener.handleEvent.call(listener);
-			};
-
-		for(var i = 0; i < type.length; i++) {
-			evName = type[i];
-			if(evName) {
-
-				if(typeof listener === 'object' && listener.handleEvent) {
-					if(!unbind) {
-						listener['oldIE' + evName] = _handleEv;
-					} else {
-						if(!listener['oldIE' + evName]) {
-							return false;
-						}
-					}
-
-					target[methodName]( 'on' + evName, listener['oldIE' + evName]);
-				} else {
-					target[methodName]( 'on' + evName, listener);
-				}
-
-			}
-		}
-	};
-	
-}

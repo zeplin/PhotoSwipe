@@ -94,7 +94,6 @@ var _isOpen,
 	_cancelAF,
 	_initalClassName,
 	_initalWindowScrollY,
-	_oldIE,
 	_currentWindowScrollY,
 	_features,
 	_windowVisibleSize = {},
@@ -521,7 +520,6 @@ var publicMethods = {
 		_requestAF = _features.raf;
 		_cancelAF = _features.caf;
 		_transformKey = _features.transform;
-		_oldIE = _features.oldIE;
 		
 		self.scrollWrap = template.querySelector('.pswp__scroll-wrap');
 		self.container = self.scrollWrap.querySelector('.pswp__container');
@@ -611,9 +609,7 @@ var publicMethods = {
 			_setTranslateX( (i+_containerShiftIndex) * _slideSize.x, _itemHolders[i].el.style);
 		}
 
-		if(!_oldIE) {
-			framework.bind(self.scrollWrap, _downEvents, self); // no dragging for old IE
-		}
+        framework.bind(self.scrollWrap, _downEvents, self);
 
 		_listen('initialZoomInEnd', function() {
 			self.setContent(_itemHolders[0], _currentItemIndex-1);

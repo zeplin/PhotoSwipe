@@ -16,12 +16,6 @@ _registerModule('DesktopZoom', {
 	publicMethods: {
 
 		initDesktopZoom: function() {
-
-			if(_oldIE) {
-				// no zoom for old IE (<=8)
-				return;
-			}
-
 			if(_likelyTouchDevice) {
 				// if detected hardware touch support, we wait until mouse is used,
 				// and only then apply desktop-zoom features
@@ -31,7 +25,6 @@ _registerModule('DesktopZoom', {
 			} else {
 				self.setupDesktopZoom(true);
 			}
-
 		},
 
 		setupDesktopZoom: function(onInit) {
