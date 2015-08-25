@@ -173,10 +173,6 @@ var framework = {
 			}
 		}
 
-		// Detect SVG support
-		features.svg = !!document.createElementNS && 
-						!!document.createElementNS('http://www.w3.org/2000/svg', 'svg').createSVGRect;
-
 		framework.features = features;
 
 		return features;

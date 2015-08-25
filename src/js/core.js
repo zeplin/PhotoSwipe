@@ -594,7 +594,6 @@ var publicMethods = {
         template.classList.toggle('pswp--animate_opacity', _options.showHideOpacity);
         template.classList.add(_likelyTouchDevice ? 'pswp--touch' : 'pswp--notouch');
         template.classList.toggle('pswp--css_animation', !!_features.animationName);
-        template.classList.toggle('pswp--svg', _features.svg);
 
 		self.updateSize();
 

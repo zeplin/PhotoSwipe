@@ -10,7 +10,6 @@
     "dist/photoswipe.css",
     "dist/photoswipe-ui-default.js",
     "dist/default-skin/default-skin.css",
-    "dist/default-skin/default-skin.png",
     "dist/default-skin/default-skin.svg",
     "dist/default-skin/preloader.gif"
   ],
@@ -23,7 +22,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/dimsemenov/PhotoSwipe.git"
+    "url": "git://github.com/zeplin/PhotoSwipe.git"
   },
   "license": "MIT",
   "ignore": [
