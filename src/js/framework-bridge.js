@@ -100,14 +100,11 @@ var framework = {
 		if(framework.features) {
 			return framework.features;
 		}
-		var helperEl = framework.createEl(),
-			helperStyle = helperEl.style,
-			vendor = '',
-			features = {};
+		var features = {};
 
 		features.touch = 'ontouchstart' in window;
 
-		features.pointerEvent = navigator.pointerEnabled || navigator.msPointerEnabled;
+		features.pointerEvent = 'PointerEvent' in window || navigator.msPointerEnabled;
 
 		// fix false-positive detection of old Android in new IE
 		// (IE11 ua string contains "Android 4.0")
@@ -149,28 +146,6 @@ var framework = {
 			features.isMobileOpera = /opera mini|opera mobi/i.test(ua);
 
 			// p.s. yes, yes, UA sniffing is bad, propose your solution for above bugs.
-		}
-		
-		var styleChecks = ['transform', 'perspective', 'animationName'],
-			vendors = ['', 'webkit','Moz','ms','O'],
-			styleCheckItem,
-			styleName;
-
-		for(var i = 0; i < 4; i++) {
-			vendor = vendors[i];
-
-			for(var a = 0; a < 3; a++) {
-				styleCheckItem = styleChecks[a];
-
-				// uppercase first letter of property name, if vendor is present
-				styleName = vendor + (vendor ? 
-										styleCheckItem.charAt(0).toUpperCase() + styleCheckItem.slice(1) : 
-										styleCheckItem);
-			
-				if(!features[styleCheckItem] && styleName in helperStyle ) {
-					features[styleCheckItem] = styleName;
-				}
-			}
 		}
 
 		framework.features = features;

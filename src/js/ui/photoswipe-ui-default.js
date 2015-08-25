@@ -773,7 +773,7 @@ var PhotoSwipeUI_Default =
 		if(!_overlayUIUpdated) {
 			ui.update();
 		}
-		framework.removeClass(_controls,'pswp__ui--hidden');
+        _controls.classList.remove('pswp__ui--hidden');
 	};
 
 	ui.supportsFullscreen = function() {

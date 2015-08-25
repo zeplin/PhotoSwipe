@@ -394,7 +394,7 @@ _registerModule('Controller', {
 							return;
 						}
 						if( !item.imageAppended ) {
-							if(_features.transform && (_mainScrollAnimating || _initialZoomRunning) ) {
+							if(_mainScrollAnimating || _initialZoomRunning) {
 								_imagesToAppendPool.push({
 									item:item,
 									baseDiv:baseDiv,
@@ -421,24 +421,19 @@ _registerModule('Controller', {
 					_shout('imageLoadComplete', index, item);
 				};
 
-				if(framework.features.transform) {
-					
-					var placeholderClassName = 'pswp__img pswp__img--placeholder'; 
-					placeholderClassName += (item.msrc ? '' : ' pswp__img--placeholder--blank');
 
-					var placeholder = framework.createEl(placeholderClassName, item.msrc ? 'img' : '');
-					if(item.msrc) {
-						placeholder.src = item.msrc;
-					}
-					
-					_setImageSize(item, placeholder);
+                var placeholderClassName = 'pswp__img pswp__img--placeholder';
+                placeholderClassName += (item.msrc ? '' : ' pswp__img--placeholder--blank');
 
-					baseDiv.appendChild(placeholder);
-					item.placeholder = placeholder;
+                var placeholder = framework.createEl(placeholderClassName, item.msrc ? 'img' : '');
+                if(item.msrc) {
+                    placeholder.src = item.msrc;
+                }
 
-				}
-				
+                _setImageSize(item, placeholder);
 
+                baseDiv.appendChild(placeholder);
+                item.placeholder = placeholder;
 				
 
 				if(!item.loading) {
@@ -448,7 +443,7 @@ _registerModule('Controller', {
 
 				if( self.allowProgressiveImg() ) {
 					// just append image
-					if(!_initialContentSet && _features.transform) {
+					if(!_initialContentSet) {
 						_imagesToAppendPool.push({
 							item:item, 
 							baseDiv:baseDiv, 

@@ -10,8 +10,7 @@
     "dist/photoswipe.css",
     "dist/photoswipe-ui-default.js",
     "dist/default-skin/default-skin.css",
-    "dist/default-skin/default-skin.svg",
-    "dist/default-skin/preloader.gif"
+    "dist/default-skin/default-skin.svg"
   ],
   "keywords": [
     "image",

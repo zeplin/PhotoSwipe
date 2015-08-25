@@ -181,13 +181,6 @@
 	background: $pswp__placeholder-color;
 }
 
-.pswp--ie .pswp__img {
-	width: 100% !important;
-	height: auto !important;
-	left: 0;
-	top: 0;
-}
-
 /*
 	Error message appears when image is not loaded
 	(JS option errorMsg controls markup)

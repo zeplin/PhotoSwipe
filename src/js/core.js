@@ -71,8 +71,6 @@ var _isOpen,
 	_viewportSize = {},
 	_currZoomLevel,
 	_startZoomLevel,
-	_translatePrefix,
-	_translateSufix,
 	_updateSizeInterval,
 	_itemsNeedUpdate,
 	_currPositionIndex = 0,
@@ -85,7 +83,6 @@ var _isOpen,
 	_dragMoveEvent,
 	_dragEndEvent,
 	_dragCancelEvent,
-	_transformKey,
 	_pointerEventEnabled,
 	_isFixedPosition = true,
 	_likelyTouchDevice,
@@ -146,8 +143,10 @@ var _isOpen,
 		if(!_renderMaxResolution || (item && item !== self.currItem) ) {
 			zoom = zoom / (item ? item.fitRatio : self.currItem.fitRatio);	
 		}
-			
-		styleObj[_transformKey] = _translatePrefix + x + 'px, ' + y + 'px' + _translateSufix + ' scale(' + zoom + ')';
+
+        var transform = 'translate3d(' + x + 'px, ' + y + 'px, 0px) scale(' + zoom + ')';
+		styleObj.webkitTransform = transform;
+		styleObj.transform = transform;
 	},
 	_applyCurrentZoomPan = function( allowRenderResolution ) {
 		if(_currZoomElementStyle) {
@@ -181,7 +180,9 @@ var _isOpen,
 		}
 	},
 	_setTranslateX = function(x, elStyle) {
-		elStyle[_transformKey] = _translatePrefix + x + 'px, 0px' + _translateSufix;
+        var transform = 'translate3d(' + x + 'px, 0px, 0px)';
+		elStyle.webkitTransform = transform;
+		elStyle.transform = transform;
 	},
 	_moveMainScroll = function(x, dragging) {
 
@@ -233,11 +234,7 @@ var _isOpen,
 	_bindEvents = function() {
 		framework.bind(document, 'keydown', self);
 
-		if(_features.transform) {
-			// don't bind click event in browsers that don't support transform (mostly IE8)
-			framework.bind(self.scrollWrap, 'click', self);
-		}
-		
+		framework.bind(self.scrollWrap, 'click', self);
 
 		if(!_options.mouseUsed) {
 			framework.bind(document, 'mousemove', _onFirstMouseMove);
@@ -254,9 +251,7 @@ var _isOpen,
 		framework.unbind(document, 'keydown', self);
 		framework.unbind(document, 'mousemove', _onFirstMouseMove);
 
-		if(_features.transform) {
-			framework.unbind(self.scrollWrap, 'click', self);
-		}
+		framework.unbind(self.scrollWrap, 'click', self);
 
 		if(_isDragging) {
 			framework.unbind(window, _upMoveEvents, self);
@@ -303,58 +298,6 @@ var _isOpen,
 			}
 		}
 		return false;
-	},
-
-	_setupTransforms = function() {
-
-		if(_transformKey) {
-			// setup 3d transforms
-			var allow3dTransform = _features.perspective && !_likelyTouchDevice;
-			_translatePrefix = 'translate' + (allow3dTransform ? '3d(' : '(');
-			_translateSufix = _features.perspective ? ', 0px)' : ')';	
-			return;
-		}
-
-		// Override zoom/pan/move functions in case old browser is used (most likely IE)
-		// (so they use left/top/width/height, instead of CSS transform)
-	
-		_transformKey = 'left';
-		template.classList.add('pswp--ie');
-
-		_setTranslateX = function(x, elStyle) {
-			elStyle.left = x + 'px';
-		};
-		_applyZoomPanToItem = function(item) {
-
-			var zoomRatio = item.fitRatio > 1 ? 1 : item.fitRatio,
-				s = item.container.style,
-				w = zoomRatio * item.w,
-				h = zoomRatio * item.h;
-
-			s.width = w + 'px';
-			s.height = h + 'px';
-			s.left = item.initialPosition.x + 'px';
-			s.top = item.initialPosition.y + 'px';
-
-		};
-		_applyCurrentZoomPan = function() {
-			if(_currZoomElementStyle) {
-
-				var s = _currZoomElementStyle,
-					item = self.currItem,
-					zoomRatio = item.fitRatio > 1 ? 1 : item.fitRatio,
-					w = zoomRatio * item.w,
-					h = zoomRatio * item.h;
-
-				s.width = w + 'px';
-				s.height = h + 'px';
-
-
-				s.left = _panOffset.x + 'px';
-				s.top = _panOffset.y + 'px';
-			}
-			
-		};
 	},
 
 	_onKeyDown = function(e) {
@@ -515,8 +458,7 @@ var publicMethods = {
 		_isOpen = true;
 				
 		_features = framework.detectFeatures();
-		_transformKey = _features.transform;
-		
+
 		self.scrollWrap = template.querySelector('.pswp__scroll-wrap');
 		self.container = self.scrollWrap.querySelector('.pswp__container');
 
@@ -532,8 +474,6 @@ var publicMethods = {
 		// hide nearby item holders until initial zoom animation finishes (to avoid extra Paints)
 		_itemHolders[0].el.style.display = _itemHolders[2].el.style.display = 'none';
 
-		_setupTransforms();
-
 		// Setup global events
 		_globalEventHandlers = {
 			resize: self.updateSize,
@@ -545,7 +485,7 @@ var publicMethods = {
 		// disable show/hide effects on old browsers that don't support CSS animations or transforms, 
 		// old IOS, Android and Opera mobile. Blackberry seems to work fine, even older models.
 		var oldPhone = _features.isOldIOSPhone || _features.isOldAndroid || _features.isMobileOpera;
-		if(!_features.animationName || !_features.transform || oldPhone) {
+		if(oldPhone) {
 			_options.showAnimationDuration = _options.hideAnimationDuration = 0;
 		}
 
@@ -593,7 +533,6 @@ var publicMethods = {
         template.classList.toggle(_options.mainClass, !!_options.mainClass);
         template.classList.toggle('pswp--animate_opacity', _options.showHideOpacity);
         template.classList.add(_likelyTouchDevice ? 'pswp--touch' : 'pswp--notouch');
-        template.classList.toggle('pswp--css_animation', !!_features.animationName);
 
 		self.updateSize();
 
