@@ -90,8 +90,6 @@ var _isOpen,
 	_isFixedPosition = true,
 	_likelyTouchDevice,
 	_modules = [],
-	_requestAF,
-	_cancelAF,
 	_initalClassName,
 	_initalWindowScrollY,
 	_currentWindowScrollY,
@@ -413,7 +411,7 @@ var _animations = {},
 	_stopAnimation = function(name) {
 		if(_animations[name]) {
 			if(_animations[name].raf) {
-				_cancelAF( _animations[name].raf );
+				cancelAnimationFrame( _animations[name].raf );
 			}
 			_numAnimations--;
 			delete _animations[name];
@@ -458,7 +456,7 @@ var _animations = {},
 				}
 				onUpdate( (endProp - b) * easingFn(t/d) + b );
 
-				_animations[name].raf = _requestAF(animloop);
+				_animations[name].raf = requestAnimationFrame(animloop);
 			}
 		};
 		animloop();
@@ -517,8 +515,6 @@ var publicMethods = {
 		_isOpen = true;
 				
 		_features = framework.detectFeatures();
-		_requestAF = _features.raf;
-		_cancelAF = _features.caf;
 		_transformKey = _features.transform;
 		
 		self.scrollWrap = template.querySelector('.pswp__scroll-wrap');

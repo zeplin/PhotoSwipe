@@ -63,13 +63,13 @@ var _gestureStartTime,
 	},
 	_stopDragUpdateLoop = function() {
 		if(_dragAnimFrame) {
-			_cancelAF(_dragAnimFrame);
+			cancelAnimationFrame(_dragAnimFrame);
 			_dragAnimFrame = null;
 		}
 	},
 	_dragUpdateLoop = function() {
 		if(_isDragging) {
-			_dragAnimFrame = _requestAF(_dragUpdateLoop);
+			_dragAnimFrame = requestAnimationFrame(_dragUpdateLoop);
 			_renderMovement();
 		}
 	},
@@ -889,7 +889,7 @@ var _gestureStartTime,
 
 			panAnimLoop: function() {
 				if ( _animations.zoomPan ) {
-					_animations.zoomPan.raf = _requestAF(s.panAnimLoop);
+					_animations.zoomPan.raf = requestAnimationFrame(s.panAnimLoop);
 
 					s.now = _getCurrentTime();
 					s.timeDiff = s.now - s.lastNow;

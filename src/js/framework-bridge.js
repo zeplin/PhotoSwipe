@@ -107,11 +107,6 @@ var framework = {
 
 		features.touch = 'ontouchstart' in window;
 
-		if(window.requestAnimationFrame) {
-			features.raf = window.requestAnimationFrame;
-			features.caf = window.cancelAnimationFrame;
-		}
-
 		features.pointerEvent = navigator.pointerEnabled || navigator.msPointerEnabled;
 
 		// fix false-positive detection of old Android in new IE
@@ -176,27 +171,6 @@ var framework = {
 					features[styleCheckItem] = styleName;
 				}
 			}
-
-			if(vendor && !features.raf) {
-				vendor = vendor.toLowerCase();
-				features.raf = window[vendor+'RequestAnimationFrame'];
-				if(features.raf) {
-					features.caf = window[vendor+'CancelAnimationFrame'] || 
-									window[vendor+'CancelRequestAnimationFrame'];
-				}
-			}
-		}
-			
-		if(!features.raf) {
-			var lastTime = 0;
-			features.raf = function(fn) {
-				var currTime = new Date().getTime();
-				var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-				var id = window.setTimeout(function() { fn(currTime + timeToCall); }, timeToCall);
-				lastTime = currTime + timeToCall;
-				return id;
-			};
-			features.caf = function(id) { clearTimeout(id); };
 		}
 
 		// Detect SVG support
