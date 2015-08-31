@@ -295,9 +295,6 @@ _registerModule('Controller', {
                     if(item.img) {
                         item.img = null;
                     }
-                    if(item.preloader) {
-                        item.preloader = null;
-                    }
                     if(item.loadError) {
                         item.loaded = item.loadError = false;
                     }
@@ -369,7 +366,7 @@ _registerModule('Controller', {
             _checkForError(item);
 
             _calculateItemSize(item, _viewportSize);
-            
+
             if(item.src && !item.loadError && !item.loaded) {
 
                 item.loadComplete = function(item) {
@@ -406,7 +403,7 @@ _registerModule('Controller', {
                                 _appendImage(index, item, baseDiv, item.img, _mainScrollAnimating || _initialZoomRunning, true);
                             }
                         } else {
-                            // remove preloader & mini-img
+                            // remove mini-img
                             if(!_initialZoomRunning && item.placeholder) {
                                 item.placeholder.style.display = 'none';
                                 item.placeholder = null;

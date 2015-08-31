@@ -888,7 +888,7 @@ var publicMethods = {
             _panOffset.y = _currPanBounds.center.y;
             _applyCurrentZoomPan( true );
         }
-        
+
         _shout('resize');
     },
     

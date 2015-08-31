@@ -56,10 +56,14 @@ module.exports = function(grunt) {
       }
     },
 
-    // https://github.com/nDmitry/grunt-autoprefixer
-    autoprefixer: { 
+    // https://github.com/nDmitry/grunt-postcss
+    postcss: {
       options: {
-        browsers: ['last 3 versions', 'android 3', 'ie 9', 'bb 10']
+        processors: [
+            require('autoprefixer-core')({
+                browsers: ['last 2 versions']
+            })
+        ]
       },
       no_dest: {
         src: ['dist/photoswipe.css', 'dist/default-skin/default-skin.css']
@@ -150,7 +154,7 @@ module.exports = function(grunt) {
         tasks: ['jekyll:dev', 'copy:dev']
       },
       files: ['src/**'],
-      tasks: [ 'sass', 'autoprefixer', 'pswpbuild', 'copy:dev', 'uglify']
+      tasks: [ 'sass', 'postcss', 'pswpbuild', 'copy:dev', 'uglify']
     },
 
     cssmin: {
@@ -266,7 +270,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-sass');
-  grunt.loadNpmTasks('grunt-autoprefixer');
+  grunt.loadNpmTasks('grunt-postcss');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-jekyll');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
@@ -274,10 +278,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-svgmin');
 
   // Default task.
-  grunt.registerTask('default', ['sass', 'autoprefixer', 'pswpbuild','uglify', 'copy', 'jekyll:dev']);
+  grunt.registerTask('default', ['sass', 'postcss', 'pswpbuild','uglify', 'copy', 'jekyll:dev']);
 
-  grunt.registerTask('production', ['sass', 'autoprefixer', 'pswpbuild', 'uglify', 'copy', 'cssmin', 'jekyll:production']);
-  grunt.registerTask('nosite', ['sass', 'autoprefixer', 'pswpbuild', 'uglify']);
+  grunt.registerTask('production', ['sass', 'postcss', 'pswpbuild', 'uglify', 'copy', 'cssmin', 'jekyll:production']);
+  grunt.registerTask('nosite', ['sass', 'postcss', 'pswpbuild', 'uglify']);
   grunt.registerTask('hint', ['jshint']);
   grunt.registerTask('awsupload', ['aws_s3']);
 
