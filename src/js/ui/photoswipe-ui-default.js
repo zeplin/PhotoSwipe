@@ -277,10 +277,10 @@
                     onTap: function() {
                         if(_fullscrenAPI.isFullscreen()) {
                             _fullscrenAPI.exit();
-                            _shout('exitFullscreen');
+                            pswp.shout('exitFullscreen');
                         } else {
                             _fullscrenAPI.enter();
-                            _shout('enterFullscreen');
+                            pswp.shout('enterFullscreen');
                         }
                     }
                 }
